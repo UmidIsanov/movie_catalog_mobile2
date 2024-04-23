@@ -6,6 +6,8 @@ import HomeScreen from "./src/screens/HomeSceen";
 import MovieScreen from "./src/screens/MovieScreen";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import { Provider } from "react-redux";
+import { store } from "./src/store";
 
 const Stack = createStackNavigator();
 
@@ -21,20 +23,22 @@ export default () => {
   });
 
   return fontLoaded ? (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="movie"
-          component={MovieScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="movie"
+            component={MovieScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   ) : (
     <AppLoading />
   );

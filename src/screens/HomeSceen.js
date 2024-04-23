@@ -5,11 +5,22 @@ import { FlatList } from "react-native-gesture-handler";
 import GenreCard from "../components/GenreCard";
 import ItemSeparator from "../components/ItemSeparator";
 import { useState } from "react";
+import MovieCard from "../components/MovieCard";
 import FONTS from "../constants/Fonts";
+import { useGetNowPlayingMoviesQuery } from "../store/api/moviesApi";
 
 const Genres = ["All", "Action", "Comedy", "Romance", "Horror", "Sci-Fi"];
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
+  const { data, error, isLoading } = useGetNowPlayingMoviesQuery();
   const [activeGenre, setActiveGenre] = useState("All");
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  const goTo = (id) => {
+    navigation.navigate("movie", { movieId: id });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar
@@ -36,6 +47,17 @@ const HomeScreen = () => {
               onPress={setActiveGenre}
             />
           )}
+        />
+      </View>
+      <View>
+        <FlatList
+          data={data.results}
+          horizontal
+          keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+          ListHeaderComponent={() => <ItemSeparator width={20} />}
+          ListFooterComponent={() => <ItemSeparator width={20} />}
+          renderItem={({ item }) => <MovieCard goTo={goTo} item={item} />}
         />
       </View>
     </ScrollView>
