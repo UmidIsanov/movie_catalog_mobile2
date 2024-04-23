@@ -13,19 +13,28 @@ import COLORS from "../constants/Colors";
 import FONTS from "../constants/Fonts";
 import IMAGES from "../constants/Images";
 import { Ionicons } from "@expo/vector-icons";
+import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
 
-const MovieCard = () => {
+const MovieCard = ({
+  goTo,
+  item: { id, title, poster_path, vote_average, original_language },
+}) => {
   const [liked, setLiked] = useState(false);
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => goTo(id)}>
       <View style={styles.container}>
+        <Image
+          style={styles.backgroundImage}
+          src={`${TMDB_IMAGE_BASE_URL}/w300${poster_path}`}
+        />
         <View style={styles.imdbContainer}>
           <Image
             source={IMAGES.IMDB}
             resizeMode="cover"
             style={styles.imdImage}
           />
-          <Text style={styles.imdbRatting}>9.4</Text>
+          <Text style={styles.imdbRatting}>{vote_average.toFixed(1)}</Text>
         </View>
         <TouchableNativeFeedback onPress={() => setLiked(!liked)}>
           <Ionicons
@@ -38,11 +47,11 @@ const MovieCard = () => {
       </View>
 
       <Text style={styles.movieTitle} numberOfLines={3}>
-        URI - Surgical Strike
+        {title}
       </Text>
 
       <View style={styles.movieSubTitleContainer}>
-        <Text style={styles.movieSubTitle}>Russian | U/A</Text>
+        <Text style={styles.movieSubTitle}>{original_language} | U/A</Text>
         <View style={styles.rowAndCenter}>
           <Ionicons
             name="heart"
@@ -57,13 +66,21 @@ const MovieCard = () => {
   );
 };
 const styles = StyleSheet.create({
+  backgroundImage: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
   container: {
-    backgroundColor: COLORS.ACTIVE,
+    backgroundColor: COLORS.LIGHT_GRAY,
     height: 340,
     width: 230,
     borderRadius: 12,
     elevation: 5,
     marginVertical: 2,
+    position: "relative",
   },
   movieTitle: {
     fontFamily: FONTS.EXTRA_BOLD,
