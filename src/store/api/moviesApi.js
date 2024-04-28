@@ -14,8 +14,15 @@ export const moviesApi = createApi({
       query: (id) => ({ url: `movie/${id}` }),
       providesTags: (movie) => [{ type: "movies", id: movie.id }],
     }),
+    getTopRatedMovies: build.query({
+      query: () => ({ url: "/movie/top_rated" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useGetNowPlayingMoviesQuery, useGetSingleMovieQuery } =
-  moviesApi;
+export const {
+  useGetNowPlayingMoviesQuery,
+  useGetSingleMovieQuery,
+  useGetTopRatedMoviesQuery,
+} = moviesApi;

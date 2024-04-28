@@ -17,12 +17,12 @@ import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
 
 const MovieCard = ({
   goTo,
-  item: { id, title, poster_path, vote_average, original_language },
+  item: { id, title, vote_count, poster_path, vote_average, original_language },
 }) => {
   const [liked, setLiked] = useState(false);
 
   return (
-    <TouchableOpacity onPress={() => goTo(id)}>
+    <TouchableOpacity onPress={() => goTo(id)} activeOpacity={0.8}>
       <View style={styles.container}>
         <Image
           style={styles.backgroundImage}
@@ -59,7 +59,7 @@ const MovieCard = ({
             color={COLORS.HEART}
             style={{ marginRight: 5 }}
           />
-          <Text style={styles.movieSubTitle}>90%</Text>
+          <Text style={styles.movieSubTitle}>{vote_count}</Text>
         </View>
       </View>
     </TouchableOpacity>
