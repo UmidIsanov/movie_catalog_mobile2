@@ -31,7 +31,12 @@ const getAllGenres = () => TMDB_HTTP_REQUEST.get(ENDPOINTS.GENRES);
 
 const getPoster = (path) => `${TMDB_IMAGE_BASE_URL}/original${path}`;
 
-const getVideo = (key) => `${YOUTUBE_BASE_URL}?v=${key}`;
+const getVideo = (movieTitle) => {
+  // Encode the movie title to ensure it's safe for URL
+  const encodedTitle = encodeURIComponent(movieTitle);
+  // Construct the YouTube search URL for the movie trailer
+  return `${YOUTUBE_BASE_URL}${encodedTitle}+trailer`;
+};
 
 // const getLanguage = (language_iso) =>
 //   LANGUAGES.find((language) => language.iso_639_1 === language_iso);
