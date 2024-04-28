@@ -7,13 +7,27 @@ import ItemSeparator from "../components/ItemSeparator";
 import { useState } from "react";
 import MovieCard from "../components/MovieCard";
 import FONTS from "../constants/Fonts";
-import { useGetNowPlayingMoviesQuery } from "../store/api/moviesApi";
+import {
+  useGetNowPlayingMoviesQuery,
+  useGetTopRatedMoviesQuery,
+} from "../store/api/moviesApi";
 
 const Genres = ["All", "Action", "Comedy", "Romance", "Horror", "Sci-Fi"];
 const HomeScreen = ({ navigation }) => {
-  const { data, error, isLoading } = useGetNowPlayingMoviesQuery();
+  const {
+    data: nowPlayingData,
+    error: nowPlayingError,
+    isLoading: nowPlayingLoading,
+  } = useGetNowPlayingMoviesQuery();
+  const {
+    data: topRoatedData,
+    error: popularError,
+    isLoading: topRatedLoading,
+  } = useGetTopRatedMoviesQuery();
+
   const [activeGenre, setActiveGenre] = useState("All");
-  if (isLoading) {
+
+  if (nowPlayingLoading || topRatedLoading) {
     return <Text>Loading...</Text>;
   }
 
@@ -51,7 +65,22 @@ const HomeScreen = ({ navigation }) => {
       </View>
       <View>
         <FlatList
-          data={data.results}
+          data={nowPlayingData.results}
+          horizontal
+          keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+          ListHeaderComponent={() => <ItemSeparator width={20} />}
+          ListFooterComponent={() => <ItemSeparator width={20} />}
+          renderItem={({ item }) => <MovieCard goTo={goTo} item={item} />}
+        />
+      </View>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>Top Rated</Text>
+        <Text style={styles.headerSubTitle}>View All</Text>
+      </View>
+      <View>
+        <FlatList
+          data={topRoatedData.results}
           horizontal
           keyExtractor={(item) => item.id}
           ItemSeparatorComponent={() => <ItemSeparator width={20} />}
