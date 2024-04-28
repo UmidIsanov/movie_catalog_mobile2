@@ -13,7 +13,7 @@ import {
 import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
 import { useGetSingleMovieQuery } from "../store/api/moviesApi";
 import COLORS from "../constants/Colors";
-import { getPoster, getVideo } from "../services/MovieService";
+import { getLanguage, getPoster, getVideo } from "../services/MovieService";
 import ItemSeparator from "../components/ItemSeparator";
 import { LinearGradient } from "expo-linear-gradient";
 import FONTS from "../constants/Fonts";
@@ -65,7 +65,26 @@ const MovieScreen = ({
         <Ionicons name="play-circle-outline" size={70} color={COLORS.WHITE} />
       </TouchableOpacity>
       <ItemSeparator height={setHight(37)} />
-      <Text>{data.title}</Text>
+      <View style={styles.movieTitleContainer}>
+        <Text style={styles.moiveTitle} numberOfLines={2}>
+          {data?.original_title}
+        </Text>
+        <View style={styles.row}>
+          <Ionicons name="heart" size={22} color={COLORS.HEART} />
+          <Text style={styles.ratingText}>{data?.vote_average.toFixed(1)}</Text>
+        </View>
+      </View>
+      <Text style={styles.genderText}>
+        {data?.genres?.map((genre) => genre?.name)?.join(", ")} |{" "}
+        {data?.runtime} Min
+      </Text>
+      <Text style={styles.genderText}>
+        {getLanguage(data?.original_language)?.english_name}
+      </Text>
+      <View style={styles.overviewContainer}>
+        <Text style={styles.overviewTitle}>Overview</Text>
+        <Text style={styles.overviewText}>{data?.overview}</Text>
+      </View>
     </ScrollView>
   );
 };
@@ -119,6 +138,53 @@ const styles = StyleSheet.create({
     top: 110,
     left: setWidht(50) - 70 / 2,
     elevation: 19,
+  },
+  movieTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+  },
+  moiveTitle: {
+    color: COLORS.BLACK,
+    fontFamily: FONTS.EXTRA_BOLD,
+    fontSize: 18,
+    width: setWidht(60),
+  },
+  ratingText: {
+    marginLeft: 5,
+    color: COLORS.BLACK,
+    fontFamily: FONTS.EXTRA_BOLD,
+    fontSize: 15,
+  },
+
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  genderText: {
+    color: COLORS.LIGHT_GRAY,
+    paddingHorizontal: 20,
+    paddingTop: 5,
+    fontFamily: FONTS.BOLD,
+    fontSize: 13,
+  },
+  overviewContainer: {
+    backgroundColor: COLORS.EXTRA_LIGHT_GRAY,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginVertical: 10,
+  },
+  overviewTitle: {
+    color: COLORS.BLACK,
+    fontFamily: FONTS.BOLD,
+    fontSize: 18,
+  },
+  overviewText: {
+    color: COLORS.LIGHT_GRAY,
+    paddingVertical: 5,
+    fontSize: 13,
+    textAlign: "justify",
   },
 });
 
