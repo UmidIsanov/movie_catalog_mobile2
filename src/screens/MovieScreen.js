@@ -11,7 +11,10 @@ import {
   Linking,
 } from "react-native";
 import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
-import { useGetSingleMovieQuery } from "../store/api/moviesApi";
+import {
+  useGetSingleMovieQuery,
+  useGetVideosByidQuery,
+} from "../store/api/moviesApi";
 import COLORS from "../constants/Colors";
 import { getLanguage, getPoster, getVideo } from "../services/MovieService";
 import ItemSeparator from "../components/ItemSeparator";
@@ -31,10 +34,18 @@ const MovieScreen = ({
   poster_path,
 }) => {
   const { data, isLoading } = useGetSingleMovieQuery(route.params.movieId);
-
-  if (isLoading) {
+  const {
+    data: videoByIdData,
+    error: popularError,
+    isLoading: videoLoading,
+  } = useGetVideosByidQuery(route.params.movieId);
+  if (isLoading || videoLoading) {
     return <Text>Loading...</Text>;
   }
+
+  const trailer = videoByIdData.results.find((res) => res.type === "Trailer");
+  console.log(videoByIdData);
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar style="light" />
@@ -60,7 +71,11 @@ const MovieScreen = ({
       </View>
       <TouchableOpacity
         style={styles.playButton}
-        onPress={() => Linking.openURL(getVideo(data.title))}
+        onPress={() =>
+          Linking.openURL(
+            getVideo(trailer ? trailer.key : videoByIdData.results[0].key)
+          )
+        }
       >
         <Ionicons name="play-circle-outline" size={70} color={COLORS.WHITE} />
       </TouchableOpacity>

@@ -18,6 +18,11 @@ export const moviesApi = createApi({
       query: () => ({ url: "/movie/top_rated" }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
     }),
+
+    getVideosByid: build.query({
+      query: (id) => ({ url: `/movie/${id}/videos` }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
   }),
 });
 
@@ -25,4 +30,5 @@ export const {
   useGetNowPlayingMoviesQuery,
   useGetSingleMovieQuery,
   useGetTopRatedMoviesQuery,
+  useGetVideosByidQuery,
 } = moviesApi;
