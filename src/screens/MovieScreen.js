@@ -109,7 +109,7 @@ const MovieScreen = ({
         <Text style={styles.overviewText}>{data?.overview}</Text>
       </View>
       <View>
-        <Text>Cast</Text>
+        <Text style={styles.castTitleText}>Cast</Text>
         <FlatList
           data={creditsdData?.cast}
           horizontal
@@ -226,6 +226,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     fontSize: 13,
     textAlign: "justify",
+  },
+  castTitleText: {
+    color: COLORS.BLACK,
+    fontFamily: FONTS.BOLD,
+    fontSize: 23,
+    marginLeft: 20,
+    marginBottom: 5,
   },
 });
 
