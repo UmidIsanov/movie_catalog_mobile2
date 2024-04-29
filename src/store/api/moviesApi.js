@@ -18,6 +18,27 @@ export const moviesApi = createApi({
       query: () => ({ url: "/movie/top_rated" }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
     }),
+
+    getVideosByid: build.query({
+      query: (id) => ({ url: `/movie/${id}/videos` }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
+
+    getUpcomingMovie: build.query({
+      query: () => ({ url: "movie/upcoming" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
+    getPopularMovie: build.query({
+      query: () => ({ url: "movie/popular" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
+    getGreditsMovieById: build.query({
+      query: (id) => ({
+        url: `/movie/${id}/credits
+      `,
+      }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
   }),
 });
 
@@ -25,4 +46,8 @@ export const {
   useGetNowPlayingMoviesQuery,
   useGetSingleMovieQuery,
   useGetTopRatedMoviesQuery,
+  useGetVideosByidQuery,
+  useGetUpcomingMovieQuery,
+  useGetPopularMovieQuery,
+  useGetGreditsMovieByIdQuery,
 } = moviesApi;

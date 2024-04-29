@@ -9,7 +9,9 @@ import MovieCard from "../components/MovieCard";
 import FONTS from "../constants/Fonts";
 import {
   useGetNowPlayingMoviesQuery,
+  useGetPopularMovieQuery,
   useGetTopRatedMoviesQuery,
+  useGetUpcomingMovieQuery,
 } from "../store/api/moviesApi";
 
 const Genres = ["All", "Action", "Comedy", "Romance", "Horror", "Sci-Fi"];
@@ -20,16 +22,46 @@ const HomeScreen = ({ navigation }) => {
     isLoading: nowPlayingLoading,
   } = useGetNowPlayingMoviesQuery();
   const {
-    data: topRoatedData,
-    error: popularError,
+    data: topRatedData,
+    error: topRatedError,
     isLoading: topRatedLoading,
   } = useGetTopRatedMoviesQuery();
+  const {
+    data: upComingData,
+    error: upComingError,
+    isLoading: upComingdLoading,
+  } = useGetUpcomingMovieQuery();
+
+  const {
+    data: popularData,
+    error: popularError,
+    isLoading: popularIsLoading,
+  } = useGetPopularMovieQuery();
 
   const [activeGenre, setActiveGenre] = useState("All");
 
   if (nowPlayingLoading || topRatedLoading) {
     return <Text>Loading...</Text>;
   }
+
+  const movieListData = [
+    {
+      name: "Now Playing",
+      data: nowPlayingData.results,
+    },
+    {
+      name: "Top Rated",
+      data: topRatedData.results,
+    },
+    {
+      name: "Upcoming",
+      data: upComingData.results,
+    },
+    {
+      name: "Popular",
+      data: popularData.results,
+    },
+  ];
 
   const goTo = (id) => {
     navigation.navigate("movie", { movieId: id });
@@ -42,10 +74,7 @@ const HomeScreen = ({ navigation }) => {
         translucent={false}
         backgroundColor={COLOR.BASIC_BACKGROUND}
       />
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>Now Playing</Text>
-        <Text style={styles.headerSubTitle}>View All</Text>
-      </View>
+
       <View style={styles.genderListContainer}>
         <FlatList
           data={Genres}
@@ -63,32 +92,24 @@ const HomeScreen = ({ navigation }) => {
           )}
         />
       </View>
-      <View>
-        <FlatList
-          data={nowPlayingData.results}
-          horizontal
-          keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-          ListHeaderComponent={() => <ItemSeparator width={20} />}
-          ListFooterComponent={() => <ItemSeparator width={20} />}
-          renderItem={({ item }) => <MovieCard goTo={goTo} item={item} />}
-        />
-      </View>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>Top Rated</Text>
-        <Text style={styles.headerSubTitle}>View All</Text>
-      </View>
-      <View>
-        <FlatList
-          data={topRoatedData.results}
-          horizontal
-          keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-          ListHeaderComponent={() => <ItemSeparator width={20} />}
-          ListFooterComponent={() => <ItemSeparator width={20} />}
-          renderItem={({ item }) => <MovieCard goTo={goTo} item={item} />}
-        />
-      </View>
+
+      {movieListData.map((list, index) => (
+        <View key={index}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerTitle}>{list.name}</Text>
+            <Text style={styles.headerSubTitle}>View All</Text>
+          </View>
+          <FlatList
+            data={list.data}
+            horizontal
+            keyExtractor={(item) => item.id.toString()}
+            ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+            ListHeaderComponent={() => <ItemSeparator width={20} />}
+            ListFooterComponent={() => <ItemSeparator width={20} />}
+            renderItem={({ item }) => <MovieCard goTo={goTo} item={item} />}
+          />
+        </View>
+      ))}
     </ScrollView>
   );
 };
