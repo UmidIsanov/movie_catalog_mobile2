@@ -32,6 +32,13 @@ export const moviesApi = createApi({
       query: () => ({ url: "movie/popular" }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
     }),
+    getGreditsMovieById: build.query({
+      query: (id) => ({
+        url: `/movie/${id}/credits
+      `,
+      }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
   }),
 });
 
@@ -42,4 +49,5 @@ export const {
   useGetVideosByidQuery,
   useGetUpcomingMovieQuery,
   useGetPopularMovieQuery,
+  useGetGreditsMovieByIdQuery,
 } = moviesApi;

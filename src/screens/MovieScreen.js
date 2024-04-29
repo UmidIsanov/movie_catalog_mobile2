@@ -9,9 +9,11 @@ import {
   Touchable,
   TouchableOpacity,
   Linking,
+  FlatList,
 } from "react-native";
 import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
 import {
+  useGetGreditsMovieByIdQuery,
   useGetSingleMovieQuery,
   useGetVideosByidQuery,
 } from "../store/api/moviesApi";
@@ -21,6 +23,7 @@ import ItemSeparator from "../components/ItemSeparator";
 import { LinearGradient } from "expo-linear-gradient";
 import FONTS from "../constants/Fonts";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import CastCard from "../components/CastCard";
 
 const { height, width } = Dimensions.get("screen");
 const setHight = (h) => (height / 100) * h;
@@ -35,6 +38,12 @@ const MovieScreen = ({
 }) => {
   const { data, isLoading } = useGetSingleMovieQuery(route.params.movieId);
   const {
+    data: creditsdData,
+    error: creditsError,
+    isLoading: creditsLoading,
+  } = useGetGreditsMovieByIdQuery(route.params.movieId);
+  console.log(creditsdData);
+  const {
     data: videoByIdData,
     error: popularError,
     isLoading: videoLoading,
@@ -44,7 +53,6 @@ const MovieScreen = ({
   }
 
   const trailer = videoByIdData.results.find((res) => res.type === "Trailer");
-  console.log(videoByIdData);
 
   return (
     <ScrollView style={styles.container}>
@@ -99,6 +107,24 @@ const MovieScreen = ({
       <View style={styles.overviewContainer}>
         <Text style={styles.overviewTitle}>Overview</Text>
         <Text style={styles.overviewText}>{data?.overview}</Text>
+      </View>
+      <View>
+        <Text>Cast</Text>
+        <FlatList
+          data={creditsdData?.cast}
+          horizontal
+          keyExtractor={(item) => item?.credit_id}
+          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+          ListHeaderComponent={() => <ItemSeparator width={20} />}
+          ListFooterComponent={() => <ItemSeparator width={20} />}
+          renderItem={({ item }) => (
+            <CastCard
+              originalName={item?.name}
+              characterName={item?.character}
+              image={item?.profile_path}
+            />
+          )}
+        />
       </View>
     </ScrollView>
   );
