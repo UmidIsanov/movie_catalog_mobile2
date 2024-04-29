@@ -9,7 +9,9 @@ import MovieCard from "../components/MovieCard";
 import FONTS from "../constants/Fonts";
 import {
   useGetNowPlayingMoviesQuery,
+  useGetPopularMovieQuery,
   useGetTopRatedMoviesQuery,
+  useGetUpcomingMovieQuery,
 } from "../store/api/moviesApi";
 
 const Genres = ["All", "Action", "Comedy", "Romance", "Horror", "Sci-Fi"];
@@ -21,9 +23,20 @@ const HomeScreen = ({ navigation }) => {
   } = useGetNowPlayingMoviesQuery();
   const {
     data: topRatedData,
-    error: popularError,
+    error: topRatedError,
     isLoading: topRatedLoading,
   } = useGetTopRatedMoviesQuery();
+  const {
+    data: upComingData,
+    error: upComingError,
+    isLoading: upComingdLoading,
+  } = useGetUpcomingMovieQuery();
+
+  const {
+    data: popularData,
+    error: popularError,
+    isLoading: popularIsLoading,
+  } = useGetPopularMovieQuery();
 
   const [activeGenre, setActiveGenre] = useState("All");
 
@@ -39,6 +52,14 @@ const HomeScreen = ({ navigation }) => {
     {
       name: "Top Rated",
       data: topRatedData.results,
+    },
+    {
+      name: "Upcoming",
+      data: upComingData.results,
+    },
+    {
+      name: "Popular",
+      data: popularData.results,
     },
   ];
 

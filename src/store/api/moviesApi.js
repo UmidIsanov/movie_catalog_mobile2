@@ -23,6 +23,15 @@ export const moviesApi = createApi({
       query: (id) => ({ url: `/movie/${id}/videos` }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
     }),
+
+    getUpcomingMovie: build.query({
+      query: () => ({ url: "movie/upcoming" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
+    getPopularMovie: build.query({
+      query: () => ({ url: "movie/popular" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
   }),
 });
 
@@ -31,4 +40,6 @@ export const {
   useGetSingleMovieQuery,
   useGetTopRatedMoviesQuery,
   useGetVideosByidQuery,
+  useGetUpcomingMovieQuery,
+  useGetPopularMovieQuery,
 } = moviesApi;
