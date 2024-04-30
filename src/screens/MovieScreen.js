@@ -49,7 +49,10 @@ const MovieScreen = ({
     isLoading: videoLoading,
   } = useGetVideosByidQuery(route.params.movieId);
   if (isLoading || videoLoading) {
-    return <Text>Loading...</Text>;
+    return;
+    <View style={styles.loadingContainer}>
+      <Text>Loading...</Text>;{" "}
+    </View>;
   }
 
   const trailer = videoByIdData.results.find((res) => res.type === "Trailer");
@@ -75,7 +78,9 @@ const MovieScreen = ({
         >
           <Feather name="chevron-left" size={35} color={COLORS.WHITE} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Share</Text>
+        <View>
+          <Text style={styles.headerText}>Share</Text>
+        </View>
       </View>
       <TouchableOpacity
         style={styles.playButton}
@@ -233,6 +238,12 @@ const styles = StyleSheet.create({
     fontSize: 23,
     marginLeft: 20,
     marginBottom: 5,
+  },
+  loadingContainer: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

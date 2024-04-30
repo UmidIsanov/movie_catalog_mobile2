@@ -66,7 +66,9 @@ const HomeScreen = ({ navigation }) => {
   const goTo = (id) => {
     navigation.navigate("movie", { movieId: id });
   };
-
+  const goToTv = (id) => {
+    navigation.navigate("tvshows", {});
+  };
   return (
     <ScrollView style={styles.container}>
       <StatusBar
@@ -88,6 +90,8 @@ const HomeScreen = ({ navigation }) => {
               genreName={item}
               active={item === activeGenre ? true : false}
               onPress={setActiveGenre}
+              goTo={goToTv}
+              item={item}
             />
           )}
         />
