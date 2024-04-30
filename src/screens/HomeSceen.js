@@ -14,7 +14,7 @@ import {
   useGetUpcomingMovieQuery,
 } from "../store/api/moviesApi";
 
-const Genres = ["All", "Action", "Comedy", "Romance", "Horror", "Sci-Fi"];
+const Genres = ["Movies", "TV shows"];
 const HomeScreen = ({ navigation }) => {
   const {
     data: nowPlayingData,
@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
     isLoading: popularIsLoading,
   } = useGetPopularMovieQuery();
 
-  const [activeGenre, setActiveGenre] = useState("All");
+  const [activeGenre, setActiveGenre] = useState("Movies");
 
   if (nowPlayingLoading || topRatedLoading) {
     return <Text>Loading...</Text>;
