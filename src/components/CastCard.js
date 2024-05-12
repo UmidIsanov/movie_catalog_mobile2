@@ -4,22 +4,25 @@ import { getPoster } from "../services/MovieService";
 import COLORS from "../constants/Colors";
 import FONTS from "../constants/Fonts";
 import IMAGES from "../constants/Images";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-const CastCard = ({ originalName, image, characterName }) => {
+const CastCard = ({ goTo, id, originalName, image, characterName }) => {
   return (
-    <View style={styles.container}>
-      <Image
-        source={image ? { uri: getPoster(image) } : IMAGES.NO_IMAGE}
-        resizeMode={image ? "cover" : "contain"}
-        style={styles.image}
-      />
-      <Text style={styles.originalName} numberOfLines={2}>
-        {originalName}
-      </Text>
-      <Text style={styles.characterName} numberOfLines={2}>
-        {characterName}
-      </Text>
-    </View>
+    <TouchableOpacity onPress={() => goTo(id)} activeOpacity={0.8}>
+      <View style={styles.container}>
+        <Image
+          source={image ? { uri: getPoster(image) } : IMAGES.NO_IMAGE}
+          resizeMode={image ? "cover" : "contain"}
+          style={styles.image}
+        />
+        <Text style={styles.originalName} numberOfLines={2}>
+          {originalName}
+        </Text>
+        <Text style={styles.characterName} numberOfLines={2}>
+          {characterName}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 

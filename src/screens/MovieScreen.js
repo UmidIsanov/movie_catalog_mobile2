@@ -42,18 +42,22 @@ const MovieScreen = ({
     error: creditsError,
     isLoading: creditsLoading,
   } = useGetGreditsMovieByIdQuery(route.params.movieId);
-  console.log(creditsdData);
   const {
     data: videoByIdData,
     error: popularError,
     isLoading: videoLoading,
   } = useGetVideosByidQuery(route.params.movieId);
   if (isLoading || videoLoading) {
-    return;
-    <View style={styles.loadingContainer}>
-      <Text>Loading...</Text>;{" "}
-    </View>;
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
+
+  const goTo = (id) => {
+    navigation.navigate("person", { actorId: id });
+  };
 
   const trailer = videoByIdData.results.find((res) => res.type === "Trailer");
 
@@ -118,7 +122,7 @@ const MovieScreen = ({
         <FlatList
           data={creditsdData?.cast}
           horizontal
-          keyExtractor={(item) => item?.credit_id}
+          keyExtractor={(item) => item?.id}
           ItemSeparatorComponent={() => <ItemSeparator width={20} />}
           ListHeaderComponent={() => <ItemSeparator width={20} />}
           ListFooterComponent={() => <ItemSeparator width={20} />}
@@ -127,6 +131,8 @@ const MovieScreen = ({
               originalName={item?.name}
               characterName={item?.character}
               image={item?.profile_path}
+              goTo={goTo}
+              id={item.id}
             />
           )}
         />

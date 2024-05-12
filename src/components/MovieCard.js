@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   imdImage: {
     height: 20,
     width: 50,
-    borderBottomEndRadius: 5,
+    // borderBottomEndRadius: 5,
   },
   imdbRatting: {
     marginRight: 5,
