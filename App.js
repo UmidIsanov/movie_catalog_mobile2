@@ -8,6 +8,8 @@ import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import { Provider } from "react-redux";
 import { store } from "./src/store";
+import TvShowScreen from "./src/screens/TvShowScreen";
+import ActorScreen from "./src/screens/ActorScreen";
 
 const Stack = createStackNavigator();
 
@@ -34,6 +36,16 @@ export default () => {
           <Stack.Screen
             name="movie"
             component={MovieScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="tvshows"
+            component={TvShowScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="person"
+            component={ActorScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

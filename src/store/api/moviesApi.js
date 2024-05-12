@@ -4,7 +4,7 @@ import { baseQuery } from "../query/baseQuery";
 export const moviesApi = createApi({
   reducerPath: "api/movies",
   baseQuery,
-  tagTypes: ["movies"],
+  tagTypes: ["movies", "persons"],
   endpoints: (build) => ({
     getNowPlayingMovies: build.query({
       query: () => ({ url: "movie/now_playing" }),
@@ -13,6 +13,10 @@ export const moviesApi = createApi({
     getSingleMovie: build.query({
       query: (id) => ({ url: `movie/${id}` }),
       providesTags: (movie) => [{ type: "movies", id: movie.id }],
+    }),
+    getPersonOwnDataById: build.query({
+      query: (id) => ({ url: `person/${id}` }),
+      providesTags: (person) => [{ type: "persons", id: person.id }],
     }),
     getTopRatedMovies: build.query({
       query: () => ({ url: "/movie/top_rated" }),
@@ -50,4 +54,5 @@ export const {
   useGetUpcomingMovieQuery,
   useGetPopularMovieQuery,
   useGetGreditsMovieByIdQuery,
+  useGetPersonOwnDataByIdQuery,
 } = moviesApi;
