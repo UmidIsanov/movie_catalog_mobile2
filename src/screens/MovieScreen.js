@@ -54,7 +54,6 @@ const MovieScreen = ({
     error: recommendationsError,
     isLoading: recommendationsLoading,
   } = useGetRecommendationsMoviesByIdQuery(route.params.movieId);
-  console.log(recommendationsdData);
   if (isLoading || videoLoading) {
     return (
       <View style={styles.loadingContainer}>

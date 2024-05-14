@@ -4,7 +4,7 @@ import { baseQuery } from "../query/baseQuery";
 export const moviesApi = createApi({
   reducerPath: "api/movies",
   baseQuery,
-  tagTypes: ["movies", "persons"],
+  tagTypes: ["movies", "persons", "tv"],
   endpoints: (build) => ({
     getNowPlayingMovies: build.query({
       query: () => ({ url: "movie/now_playing" }),
@@ -50,6 +50,22 @@ export const moviesApi = createApi({
       }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
     }),
+    getTopRatedTvShows: build.query({
+      query: () => ({ url: "/tv/top_rated" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
+    getAiringTodayTvShows: build.query({
+      query: () => ({ url: "/tv/airing_today" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
+    getOnTheAirTvShows: build.query({
+      query: () => ({ url: "/tv/on_the_air" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
+    getPopularTvShows: build.query({
+      query: () => ({ url: "/tv/popular" }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
   }),
 });
 
@@ -63,4 +79,8 @@ export const {
   useGetGreditsMovieByIdQuery,
   useGetPersonOwnDataByIdQuery,
   useGetRecommendationsMoviesByIdQuery,
+  useGetTopRatedTvShowsQuery,
+  useGetAiringTodayTvShowsQuery,
+  useGetOnTheAirTvShowsQuery,
+  useGetPopularTvShowsQuery,
 } = moviesApi;
