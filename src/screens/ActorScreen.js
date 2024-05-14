@@ -6,24 +6,37 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import { useGetPersonByIdQuery } from "../store/api/peopleApi";
 import COLORS from "../constants/Colors";
 import FONTS from "../constants/Fonts";
-import { useGetPersonOwnDataByIdQuery } from "../store/api/moviesApi";
+import {
+  useGetMovieCreditsByIdQuery,
+  useGetPersonOwnDataByIdQuery,
+} from "../store/api/moviesApi";
 import { getPoster } from "../services/MovieService";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import IMAGES from "../constants/Images";
 import { ScrollView } from "react-native-gesture-handler";
+import RecommendationCard from "../components/RecommendationCard";
+import ItemSeparator from "../components/ItemSeparator";
+import MovieCastCard from "../components/MovieCastCard";
 const ActorScreen = ({ navigation, route }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = useGetPersonOwnDataByIdQuery(
     route.params.actorId
   );
+  const {
+    data: movieCredisData,
+    error: movieCreditsError,
+    isLoading: movieCredistLoading,
+  } = useGetMovieCreditsByIdQuery(route.params.actorId);
+  // console.log(movieCredisData);
   const changeIsOpenHandler = () => {
     setIsOpen((prev) => !prev);
   };
-  if (isLoading) {
+  if (isLoading || movieCredistLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Loading...</Text>
@@ -87,6 +100,17 @@ const ActorScreen = ({ navigation, route }) => {
         >
           <Feather name="chevron-left" size={35} color={COLORS.GRAY} />
         </TouchableOpacity>
+      </View>
+      <View>
+        <FlatList
+          data={movieCredisData.results}
+          horizontal
+          keyExtractor={(item) => item.id.toString()}
+          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+          ListHeaderComponent={() => <ItemSeparator width={20} />}
+          ListFooterComponent={() => <ItemSeparator width={20} />}
+          renderItem={({ item }) => <MovieCastCard item={item} />}
+        />
       </View>
     </ScrollView>
   );

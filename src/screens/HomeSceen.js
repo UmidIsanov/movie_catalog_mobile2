@@ -41,7 +41,12 @@ const HomeScreen = ({ navigation }) => {
     isLoading: popularIsLoading,
   } = useGetPopularMovieQuery();
 
-  if (nowPlayingLoading || topRatedLoading) {
+  if (
+    nowPlayingLoading ||
+    topRatedLoading ||
+    upComingdLoading ||
+    popularIsLoading
+  ) {
     return <Text>Loading...</Text>;
   }
 
