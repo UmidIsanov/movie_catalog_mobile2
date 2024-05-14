@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "movie_catalog_mobile",
+    "name": "movie Catalog",
     "slug": "movie_catalog_mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ualwayshere.movie_catalog_mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "de651f00-8178-407b-8434-3cad8ccdf6ab"
+      }
     }
   }
 }
