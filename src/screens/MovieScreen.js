@@ -14,6 +14,7 @@ import {
 import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
 import {
   useGetGreditsMovieByIdQuery,
+  useGetRecommendationsMoviesByIdQuery,
   useGetSingleMovieQuery,
   useGetVideosByidQuery,
 } from "../store/api/moviesApi";
@@ -24,6 +25,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import FONTS from "../constants/Fonts";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import CastCard from "../components/CastCard";
+import RecommendationCard from "../components/RecommendationCard";
 
 const { height, width } = Dimensions.get("screen");
 const setHight = (h) => (height / 100) * h;
@@ -47,6 +49,12 @@ const MovieScreen = ({
     error: popularError,
     isLoading: videoLoading,
   } = useGetVideosByidQuery(route.params.movieId);
+  const {
+    data: recommendationsdData,
+    error: recommendationsError,
+    isLoading: recommendationsLoading,
+  } = useGetRecommendationsMoviesByIdQuery(route.params.movieId);
+  console.log(recommendationsdData);
   if (isLoading || videoLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -54,9 +62,18 @@ const MovieScreen = ({
       </View>
     );
   }
-
+  if (!recommendationsdData) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>No recommendations available</Text>
+      </View>
+    );
+  }
   const goTo = (id) => {
     navigation.navigate("person", { actorId: id });
+  };
+  const goToMovie = (id) => {
+    navigation.navigate("movie", { movieId: id });
   };
 
   const trailer = videoByIdData.results.find((res) => res.type === "Trailer");
@@ -137,6 +154,22 @@ const MovieScreen = ({
           )}
         />
       </View>
+      <View style={styles.headerContainerRecommedation}>
+        <Text style={styles.RecommendationCardTitleText}>Recommendations</Text>
+      </View>
+      <View>
+        <FlatList
+          data={recommendationsdData.results}
+          horizontal
+          keyExtractor={(item) => item.id.toString()}
+          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
+          ListHeaderComponent={() => <ItemSeparator width={20} />}
+          ListFooterComponent={() => <ItemSeparator width={20} />}
+          renderItem={({ item }) => (
+            <RecommendationCard goTo={goToMovie} item={item} />
+          )}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -169,6 +202,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     elevation: 9,
+  },
+  headerContainerRecommedation: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   headerContainer: {
     flexDirection: "row",
@@ -239,10 +279,17 @@ const styles = StyleSheet.create({
     textAlign: "justify",
   },
   castTitleText: {
-    color: COLORS.BLACK,
+    color: COLORS.GRAY,
     fontFamily: FONTS.BOLD,
     fontSize: 23,
     marginLeft: 20,
+    marginBottom: 5,
+  },
+  RecommendationCardTitleText: {
+    color: COLORS.GRAY,
+    fontFamily: FONTS.BOLD,
+    fontSize: 23,
+    marginLeft: 4,
     marginBottom: 5,
   },
   loadingContainer: {

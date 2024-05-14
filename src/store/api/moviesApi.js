@@ -43,6 +43,13 @@ export const moviesApi = createApi({
       }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
     }),
+    getRecommendationsMoviesById: build.query({
+      query: (id) => ({
+        url: `/movie/${id}/recommendations
+      `,
+      }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
   }),
 });
 
@@ -55,4 +62,5 @@ export const {
   useGetPopularMovieQuery,
   useGetGreditsMovieByIdQuery,
   useGetPersonOwnDataByIdQuery,
+  useGetRecommendationsMoviesByIdQuery,
 } = moviesApi;

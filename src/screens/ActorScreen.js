@@ -20,7 +20,6 @@ const ActorScreen = ({ navigation, route }) => {
   const { data, isLoading, error } = useGetPersonOwnDataByIdQuery(
     route.params.actorId
   );
-  console.log(data);
   const changeIsOpenHandler = () => {
     setIsOpen((prev) => !prev);
   };
