@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import COLOR from "../constants/Colors";
 import { FlatList } from "react-native-gesture-handler";
 import GenreCard from "../components/GenreCard";
@@ -14,8 +14,11 @@ import {
   useGetUpcomingMovieQuery,
 } from "../store/api/moviesApi";
 
-const Genres = ["Movies", "TV shows"];
+// const Genres = ["Movies", "TV shows"];
 const HomeScreen = ({ navigation }) => {
+  const goToTv = () => {
+    navigation.navigate("tvshows");
+  };
   const {
     data: nowPlayingData,
     error: nowPlayingError,
@@ -37,8 +40,6 @@ const HomeScreen = ({ navigation }) => {
     error: popularError,
     isLoading: popularIsLoading,
   } = useGetPopularMovieQuery();
-
-  const [activeGenre, setActiveGenre] = useState("Movies");
 
   if (nowPlayingLoading || topRatedLoading) {
     return <Text>Loading...</Text>;
@@ -66,9 +67,7 @@ const HomeScreen = ({ navigation }) => {
   const goTo = (id) => {
     navigation.navigate("movie", { movieId: id });
   };
-  const goToTv = (id) => {
-    navigation.navigate("tvshows", {});
-  };
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar
@@ -76,8 +75,10 @@ const HomeScreen = ({ navigation }) => {
         translucent={false}
         backgroundColor={COLOR.BASIC_BACKGROUND}
       />
-
-      <View style={styles.genderListContainer}>
+      <View style={{ flex: 1, justifyContent: "start" }}>
+        <Button title="Go to TV Shows" onPress={goToTv} />
+      </View>
+      {/* <View style={styles.genderListContainer}>
         <FlatList
           data={Genres}
           horizontal
@@ -90,18 +91,18 @@ const HomeScreen = ({ navigation }) => {
               genreName={item}
               active={item === activeGenre ? true : false}
               onPress={setActiveGenre}
-              goTo={goToTv}
+              // goTo={goToTv}
               item={item}
             />
           )}
         />
-      </View>
+      </View> */}
 
       {movieListData.map((list, index) => (
         <View key={index}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerTitle}>{list.name}</Text>
-            <Text style={styles.headerSubTitle}>View All</Text>
+            {/* <Text style={styles.headerSubTitle}>View All</Text> */}
           </View>
           <FlatList
             data={list.data}

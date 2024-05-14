@@ -1,80 +1,56 @@
-import { StatusBar } from "expo-status-bar";
+import React from "react";
 import {
+  Dimensions,
+  Image,
+  StatusBar,
   StyleSheet,
   Text,
-  Image,
-  ScrollView,
-  Dimensions,
-  View,
-  Touchable,
-  TouchableOpacity,
   Linking,
-  FlatList,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
-import {
-  useGetGreditsMovieByIdQuery,
-  useGetRecommendationsMoviesByIdQuery,
-  useGetSingleMovieQuery,
-  useGetVideosByidQuery,
-} from "../store/api/moviesApi";
-import COLORS from "../constants/Colors";
-import { getLanguage, getPoster, getVideo } from "../services/MovieService";
-import ItemSeparator from "../components/ItemSeparator";
-import { LinearGradient } from "expo-linear-gradient";
 import FONTS from "../constants/Fonts";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import CastCard from "../components/CastCard";
-import RecommendationCard from "../components/RecommendationCard";
+import COLORS from "../constants/Colors"; // Assuming you have a file for colors
+import {
+  useGetSingleTvShowQuery,
+  useGetVideosByIdTvShowsQuery,
+  useGetVideosByidQuery,
+} from "../store/api/moviesApi";
+import { ScrollView } from "react-native-gesture-handler";
+import { getPoster, getVideo } from "../services/MovieService";
+import { LinearGradient } from "expo-linear-gradient";
+import ItemSeparator from "../components/ItemSeparator";
 
 const { height, width } = Dimensions.get("screen");
 const setHight = (h) => (height / 100) * h;
 const setWidht = (w) => (width / 100) * w;
-
-const MovieScreen = ({
-  navigation,
-  route,
-  title,
-  backdrop_path,
-  poster_path,
-}) => {
-  const { data, isLoading } = useGetSingleMovieQuery(route.params.movieId);
+const TvScreen = ({ navigation, route }) => {
   const {
-    data: creditsdData,
-    error: creditsError,
-    isLoading: creditsLoading,
-  } = useGetGreditsMovieByIdQuery(route.params.movieId);
+    data: singleTvShowData,
+    error: singleTvShowError,
+    isLoading: singleTvShowLoading,
+  } = useGetSingleTvShowQuery(route.params.movieId);
+  console.log(singleTvShowData);
   const {
     data: videoByIdData,
     error: popularError,
     isLoading: videoLoading,
-  } = useGetVideosByidQuery(route.params.movieId);
-  const {
-    data: recommendationsdData,
-    error: recommendationsError,
-    isLoading: recommendationsLoading,
-  } = useGetRecommendationsMoviesByIdQuery(route.params.movieId);
-  if (isLoading || videoLoading) {
+  } = useGetVideosByIdTvShowsQuery(route.params.movieId);
+  if (singleTvShowLoading || videoLoading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View
+        style={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Text>Loading...</Text>
       </View>
     );
   }
-  if (!recommendationsdData) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text>No recommendations available</Text>
-      </View>
-    );
-  }
-  const goTo = (id) => {
-    navigation.navigate("person", { actorId: id });
-  };
-  const goToMovie = (id) => {
-    navigation.navigate("movie", { movieId: id });
-  };
-
   const trailer = videoByIdData.results.find((res) => res.type === "Trailer");
 
   return (
@@ -88,19 +64,21 @@ const MovieScreen = ({
       <View style={styles.moviePosterImageContainer}>
         <Image
           style={styles.movePosterImage}
-          source={{ uri: getPoster(data.backdrop_path) }}
+          source={{ uri: getPoster(singleTvShowData.backdrop_path) }}
         />
       </View>
+
       <View style={styles.headerContainer}>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => navigation.goBack()}
         >
-          <Feather name="chevron-left" size={35} color={COLORS.WHITE} />
+          <Feather
+            name="chevron-left"
+            size={45}
+            color={COLORS.EXTRA_LIGHT_GRAY}
+          />
         </TouchableOpacity>
-        <View>
-          <Text style={styles.headerText}>Share</Text>
-        </View>
       </View>
       <TouchableOpacity
         style={styles.playButton}
@@ -115,64 +93,22 @@ const MovieScreen = ({
       <ItemSeparator height={setHight(37)} />
       <View style={styles.movieTitleContainer}>
         <Text style={styles.moiveTitle} numberOfLines={2}>
-          {data?.original_title}
+          {singleTvShowData?.original_name}
         </Text>
         <View style={styles.row}>
           <Ionicons name="heart" size={22} color={COLORS.HEART} />
-          <Text style={styles.ratingText}>{data?.vote_average.toFixed(1)}</Text>
+          <Text style={styles.ratingText}>
+            {singleTvShowData?.vote_average.toFixed(1)}
+          </Text>
         </View>
       </View>
-      <Text style={styles.genderText}>
-        {data?.genres?.map((genre) => genre?.name)?.join(", ")} |{" "}
-        {data?.runtime} Min
-      </Text>
-      <Text style={styles.genderText}>
-        {getLanguage(data?.original_language)?.english_name}
-      </Text>
       <View style={styles.overviewContainer}>
         <Text style={styles.overviewTitle}>Overview</Text>
-        <Text style={styles.overviewText}>{data?.overview}</Text>
-      </View>
-      <View>
-        <Text style={styles.castTitleText}>Cast</Text>
-        <FlatList
-          data={creditsdData?.cast}
-          horizontal
-          keyExtractor={(item) => item?.id}
-          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-          ListHeaderComponent={() => <ItemSeparator width={20} />}
-          ListFooterComponent={() => <ItemSeparator width={20} />}
-          renderItem={({ item }) => (
-            <CastCard
-              originalName={item?.name}
-              characterName={item?.character}
-              image={item?.profile_path}
-              goTo={goTo}
-              id={item.id}
-            />
-          )}
-        />
-      </View>
-      <View style={styles.headerContainerRecommedation}>
-        <Text style={styles.RecommendationCardTitleText}>Recommendations</Text>
-      </View>
-      <View>
-        <FlatList
-          data={recommendationsdData.results}
-          horizontal
-          keyExtractor={(item) => item.id.toString()}
-          ItemSeparatorComponent={() => <ItemSeparator width={20} />}
-          ListHeaderComponent={() => <ItemSeparator width={20} />}
-          ListFooterComponent={() => <ItemSeparator width={20} />}
-          renderItem={({ item }) => (
-            <RecommendationCard goTo={goToMovie} item={item} />
-          )}
-        />
+        <Text style={styles.overviewText}>{singleTvShowData?.overview}</Text>
       </View>
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -299,4 +235,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MovieScreen;
+export default TvScreen;

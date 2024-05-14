@@ -15,9 +15,16 @@ import IMAGES from "../constants/Images";
 import { Ionicons } from "@expo/vector-icons";
 import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
 
-const MovieCard = ({
+const RecommendationCard = ({
   goTo,
-  item: { id, title, vote_count, poster_path, vote_average, original_language },
+  item: {
+    id,
+    original_title,
+    vote_count,
+    poster_path,
+    vote_average,
+    original_language,
+  },
 }) => {
   const [liked, setLiked] = useState(false);
 
@@ -47,12 +54,12 @@ const MovieCard = ({
       </View>
 
       <Text style={styles.movieTitle} numberOfLines={3}>
-        {title}
+        {original_title}
       </Text>
 
       <View style={styles.movieSubTitleContainer}>
         <Text style={styles.movieSubTitle}>{original_language} | U/A</Text>
-        <View style={styles.rowAndCenter}>
+        {/* <View style={styles.rowAndCenter}>
           <Ionicons
             name="heart"
             size={24}
@@ -60,7 +67,7 @@ const MovieCard = ({
             style={{ marginRight: 5 }}
           />
           <Text style={styles.movieSubTitle}>{vote_count}</Text>
-        </View>
+        </View> */}
       </View>
     </TouchableOpacity>
   );
@@ -72,12 +79,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
+    width: 210,
+    height: 300,
     borderRadius: 8,
   },
   container: {
     backgroundColor: COLORS.LIGHT_GRAY,
-    height: 340,
-    width: 230,
+    height: 300,
+    width: 210,
     borderRadius: 12,
     elevation: 5,
     marginVertical: 2,
@@ -124,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MovieCard;
+export default RecommendationCard;

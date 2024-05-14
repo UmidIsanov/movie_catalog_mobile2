@@ -15,9 +15,16 @@ import IMAGES from "../constants/Images";
 import { Ionicons } from "@expo/vector-icons";
 import { TMDB_IMAGE_BASE_URL } from "../constants/Urls";
 
-const MovieCard = ({
+const TvShowCard = ({
   goTo,
-  item: { id, title, vote_count, poster_path, vote_average, original_language },
+  item: {
+    id,
+    original_name,
+    vote_count,
+    poster_path,
+    vote_average,
+    original_language,
+  },
 }) => {
   const [liked, setLiked] = useState(false);
 
@@ -47,7 +54,7 @@ const MovieCard = ({
       </View>
 
       <Text style={styles.movieTitle} numberOfLines={3}>
-        {title}
+        {original_name}
       </Text>
 
       <View style={styles.movieSubTitleContainer}>
@@ -73,12 +80,13 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     borderRadius: 8,
+    width: 220,
   },
   container: {
     backgroundColor: COLORS.LIGHT_GRAY,
     height: 340,
-    width: 230,
-    borderRadius: 12,
+    width: 220,
+    borderRadius: 8,
     elevation: 5,
     marginVertical: 2,
     position: "relative",
@@ -88,7 +96,7 @@ const styles = StyleSheet.create({
     color: COLORS.GRAY,
     paddingVertical: 2,
     marginTop: 5,
-    width: 230,
+    width: 220,
   },
   movieSubTitleContainer: {
     flexDirection: "row",
@@ -108,7 +116,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "flex-end",
     backgroundColor: COLORS.YELLOW,
-    borderBottomLeftRadius: 5,
+    borderBottomLeftRadius: 8,
     borderTopRightRadius: 12,
     paddingVertical: 3,
   },
@@ -124,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MovieCard;
+export default TvShowCard;
