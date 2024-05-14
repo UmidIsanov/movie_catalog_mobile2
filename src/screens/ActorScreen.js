@@ -65,6 +65,7 @@ const ActorScreen = ({ navigation, route }) => {
       </View>
       <TouchableOpacity onPress={changeIsOpenHandler}>
         <View style={styles.biographyContainer}>
+          <Text style={styles.biographyTitle}>Biography</Text>
           {isOpen ? (
             data && (
               <Text style={styles.biographyText}>
@@ -135,6 +136,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginVertical: 10,
+  },
+  biographyTitle: {
+    color: COLORS.BLACK,
+    fontFamily: FONTS.BOLD,
+    fontSize: 18,
   },
   biographyText: {
     color: COLORS.LIGHT_GRAY,
