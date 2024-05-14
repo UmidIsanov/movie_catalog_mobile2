@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { store } from "./src/store";
 import TvShowScreen from "./src/screens/TvShowScreen";
 import ActorScreen from "./src/screens/ActorScreen";
+import TvScreen from "./src/screens/TvScreen";
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,11 @@ export default () => {
           <Stack.Screen
             name="tvshows"
             component={TvShowScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="tvScreen"
+            component={TvScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

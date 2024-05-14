@@ -14,6 +14,11 @@ export const moviesApi = createApi({
       query: (id) => ({ url: `movie/${id}` }),
       providesTags: (movie) => [{ type: "movies", id: movie.id }],
     }),
+    getSingleTvShow: build.query({
+      query: (id) => ({ url: `tv/${id}` }),
+      providesTags: (movie) => [{ type: "movies", id: movie.id }],
+    }),
+
     getPersonOwnDataById: build.query({
       query: (id) => ({ url: `person/${id}` }),
       providesTags: (person) => [{ type: "persons", id: person.id }],
@@ -27,7 +32,10 @@ export const moviesApi = createApi({
       query: (id) => ({ url: `/movie/${id}/videos` }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
     }),
-
+    getVideosByIdTvShows: build.query({
+      query: (id) => ({ url: `/tv/${id}/videos` }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
     getUpcomingMovie: build.query({
       query: () => ({ url: "movie/upcoming" }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
@@ -83,4 +91,6 @@ export const {
   useGetAiringTodayTvShowsQuery,
   useGetOnTheAirTvShowsQuery,
   useGetPopularTvShowsQuery,
+  useGetSingleTvShowQuery,
+  useGetVideosByIdTvShowsQuery,
 } = moviesApi;

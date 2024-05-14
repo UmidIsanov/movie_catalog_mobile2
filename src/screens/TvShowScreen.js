@@ -62,7 +62,7 @@ const TvShowScreen = ({ navigation }) => {
     },
   ];
   const goTo = (id) => {
-    navigation.navigate("movie", { movieId: id });
+    navigation.navigate("tvScreen", { movieId: id });
   };
   return (
     <ScrollView style={styles.container}>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.REGULAR,
   },
   headerGoBackContainer: {
-    padding: 10,
+    padding: 0,
   },
   buttonGoBack: {
     borderRadius: 8,
