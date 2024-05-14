@@ -41,7 +41,7 @@ const TvShowCard = ({
             resizeMode="cover"
             style={styles.imdImage}
           />
-          {/* <Text style={styles.imdbRatting}>{vote_average.toFixed(1)}</Text> */}
+          <Text style={styles.imdbRatting}>{vote_average.toFixed(1)}</Text>
         </View>
         <TouchableNativeFeedback onPress={() => setLiked(!liked)}>
           <Ionicons
@@ -66,7 +66,7 @@ const TvShowCard = ({
             color={COLORS.HEART}
             style={{ marginRight: 5 }}
           />
-          {/* <Text style={styles.movieSubTitle}>{vote_count}</Text> */}
+          <Text style={styles.movieSubTitle}>{vote_count}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -79,12 +79,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
+    borderRadius: 8,
+    width: 220,
   },
   container: {
     backgroundColor: COLORS.LIGHT_GRAY,
     height: 340,
     width: 220,
-    borderRadius: 12,
+    borderRadius: 8,
     elevation: 5,
     marginVertical: 2,
     position: "relative",
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "flex-end",
     backgroundColor: COLORS.YELLOW,
-    borderBottomLeftRadius: 5,
+    borderBottomLeftRadius: 8,
     borderTopRightRadius: 12,
     paddingVertical: 3,
   },
