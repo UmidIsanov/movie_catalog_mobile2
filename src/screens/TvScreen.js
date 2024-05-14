@@ -31,7 +31,6 @@ const TvScreen = ({ navigation, route }) => {
     error: singleTvShowError,
     isLoading: singleTvShowLoading,
   } = useGetSingleTvShowQuery(route.params.movieId);
-  console.log(singleTvShowData);
   const {
     data: videoByIdData,
     error: popularError,

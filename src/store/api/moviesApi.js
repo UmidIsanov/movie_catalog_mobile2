@@ -58,6 +58,13 @@ export const moviesApi = createApi({
       }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
     }),
+    getMovieCreditsById: build.query({
+      query: (id) => ({
+        url: `/person/${id}/movie_credits
+      `,
+      }),
+      providesTags: () => [{ type: "movies", id: "LIST" }],
+    }),
     getTopRatedTvShows: build.query({
       query: () => ({ url: "/tv/top_rated" }),
       providesTags: () => [{ type: "movies", id: "LIST" }],
@@ -93,4 +100,5 @@ export const {
   useGetPopularTvShowsQuery,
   useGetSingleTvShowQuery,
   useGetVideosByIdTvShowsQuery,
+  useGetMovieCreditsByIdQuery,
 } = moviesApi;
